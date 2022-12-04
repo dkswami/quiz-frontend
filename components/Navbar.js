@@ -9,10 +9,10 @@ export default function Navbar() {
 					<Link href='/'>Home</Link>
 				</li>
 				<li>
-					<Link href='/quiz'>Quizs</Link>
+					<Link href='/allquiz'>All Quiz</Link>
 				</li>
 				<li>
-					<Link href='/create-quiz'>Create Quiz</Link>
+					<Link href='/createquiz'>Create Quiz</Link>
 				</li>
 				<li>
 					<Link href='/signup'>signup</Link>
@@ -21,6 +21,7 @@ export default function Navbar() {
 					<Link href='/login'>login</Link>
 				</li>
 			</ul>
+			<span></span>
 		</nav>
 	)
 }
