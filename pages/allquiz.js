@@ -41,7 +41,7 @@ const Quiz = () => {
 							     })
 						}}>
 							<span>Unique link for this quiz :</span>
-							<span>{`http://localhost:3000/attemptquiz/${quiz._id}`}</span>
+							<a>{`http://localhost:3000/attemptquiz/${quiz._id}`}</a>
 						</div>
 						<p>{quiz.description}</p>
 					</div>
