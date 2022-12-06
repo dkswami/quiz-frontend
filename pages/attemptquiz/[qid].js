@@ -26,6 +26,9 @@ function AttemptQuiz() {
 			try {
 				const response = await axios.get(`http://localhost:4000/api/v1/quiz/${quizId}`, config);
 				setQuizData(response.data);
+				if(response.data.statusCode === 401) {
+					router.push('/login');
+				}
 			} catch (error) {
 				console.log(error)
 			}
@@ -41,26 +44,26 @@ function AttemptQuiz() {
 			})}
 			<h2>{title}</h2>
 			<p>{description}</p>
-			{questions &&
+			{ (questions && quizData.questions.question1) &&
 				<div className={quizStyles.quizContainer} id="quiz">
 					<div className={quizStyles.quizHeader}>
-						<h2 id="question">{questions[currentQues].question}</h2>
+						<h2 id="question">{questions.question1}</h2>
 						<ul>
 							<li>
 								<input type="radio" name="answer" id="a"/>
-								<label htmlFor="a" id="a_text">{questions[currentQues].options[0]}</label>
+								<label htmlFor="a" id="a_text">{questions.question1.options1}</label>
 							</li>
 							<li>
 								<input type="radio" name="answer" id="b" />
-								<label htmlFor="b" id="b_text">{questions[currentQues].options[1]}</label>
+								<label htmlFor="b" id="b_text">{questions.question1.options2}</label>
 							</li>
 							<li>
 								<input type="radio" name="answer" id="c" />
-								<label htmlFor="c" id="c_text">{questions[currentQues].options[2]}</label>
+								<label htmlFor="c" id="c_text">{questions.question1.options3}</label>
 							</li>
 							<li>
 								<input type="radio" name="answer" id="d" />
-								<label htmlFor="d" id="d_text">{questions[currentQues].options[3]}</label>
+								<label htmlFor="d" id="d_text">{questions.question1.options4}</label>
 							</li>
 						</ul>
 					</div>

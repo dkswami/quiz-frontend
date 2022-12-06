@@ -3,8 +3,6 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { UserContext } from '../contexts/user.context';
 
-import Loginstyles from '../styles/Login.module.css';
-
 const defaultFormFields = {
 	email: '',
 	password: ''
@@ -45,12 +43,21 @@ function login() {
 	}
 	console.log(formFields)
 	return (
-		<>
-			<h2>login Page</h2>
-			<form onSubmit={handleSubmit} className={Loginstyles.loginContainer}>
-				<input type="email" placeholder="email" name='email' value={email} onChange={handleChange} />
-				<input type="password" placeholder="password" name='password' value={password} onChange={handleChange} />
-				<button>login</button>
+		<>		
+			<h2>Login Page</h2>
+			<form onSubmit={handleSubmit} >
+				<div className="form-group">
+					<label htmlFor="email">Email address:</label>
+					<input type="email" className="form-control" id="email" placeholder="Enter Email"  name='email' value={email} onChange={handleChange} />
+				</div>
+				<div className="form-group">
+					<label htmlFor="pwd">Password:</label>
+					<input type="password" className="form-control" id="pwd" placeholder="Password" name='password' value={password} onChange={handleChange} />
+				</div>
+				<div className="checkbox">
+					<label><input type="checkbox" /> Remember me</label>
+				</div>				
+				<button type="submit" className="btn btn-primary">login</button>
 			</form>
 		</>
 	)

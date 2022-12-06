@@ -1,27 +1,24 @@
 import Link from "next/link";
-import navStyles from "../styles/Navbar.module.css";
 
 export default function Navbar() {
 	return (
-		<nav className={navStyles.nav}>
-			<ul>
-				<li>
-					<Link href='/'>Home</Link>
-				</li>
-				<li>
-					<Link href='/allquiz'>All Quiz</Link>
-				</li>
-				<li>
-					<Link href='/createquiz'>Create Quiz</Link>
-				</li>
-				<li>
-					<Link href='/signup'>signup</Link>
-				</li>
-				<li>
-					<Link href='/login'>login</Link>
-				</li>
-			</ul>
-			<span></span>
-		</nav>
+		<>
+			<nav className="navbar navbar-inverse">
+				<div className="container-fluid">
+					<div className="navbar-header">
+						<a className="navbar-brand" href="/">WebSiteName</a>
+					</div>
+					<ul className="nav navbar-nav">
+						<li className="active"><Link href="/allquiz">All Quiz</Link></li>
+						<li><Link href="/createquiz">Create Quiz</Link></li>
+						<li><Link href="/attempts">Your Attempts</Link></li>
+					</ul>
+					<ul className="nav navbar-nav navbar-right">
+						<li><Link href="/signup"><span className="glyphicon glyphicon-user"></span> Sign Up</Link></li>
+						<li><Link href="/login"><span className="glyphicon glyphicon-log-in"></span> Login</Link></li>
+					</ul>
+				</div>
+			</nav>			
+		</>
 	)
 }
