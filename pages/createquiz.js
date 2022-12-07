@@ -22,8 +22,9 @@ const CreateQuiz = () => {
 	}
 
 	const handleAddQuestion = (questionToAdd, questionNo) => {
+		// console.log(questionToAdd, questionNo)
 		questions[questionNo] = questionToAdd;
-		setQuizData({ ...quizData, questions: questions })
+		setQuizData({ ...quizData, questions: [ ...questions ] })
 	}
 
 	const handleSubmit = async (event) => {
@@ -49,6 +50,7 @@ const CreateQuiz = () => {
 			console.log(error)
 		}
 	}
+
 	console.log(quizData);
 
 	return (
@@ -66,7 +68,7 @@ const CreateQuiz = () => {
 				<p>As mentioned in the mail there will be 10 question and the quiz will have total 50 marks</p>
 				{
 					[...Array(10)].map((_, i) => {
-						return <CreateQuestion key={i} questionNo={i} handleAddQuestion={handleAddQuestion} />
+						return <CreateQuestion key={i} questionNo={i} handleAddQuestion={(questionToAdd, quesNo) =>handleAddQuestion(questionToAdd, quesNo)} />
 					})
 				}
 				<button type="submit" className="btn btn-primary center-block">Submit</button>

@@ -9,7 +9,7 @@ const defaultQuestionData = {
 	answers: ["", "", "", ""],
 }
 
-const CreateQuestion = ({ handleAddQuestion, questionNo }) => {
+const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 	const [questionData, setQuestionData] = useState(defaultQuestionData)
 	const { question, questionType, difficulty, correctAnswers, answers } = questionData;
 
@@ -21,8 +21,9 @@ const CreateQuestion = ({ handleAddQuestion, questionNo }) => {
 	}
 
 	const handleOptionsChange = (event, index) => {
+		event.preventDefault();
 		answers[index] = event.target.value;
-		const newQuestionData = { ...questionData, answers: answers }
+		const newQuestionData = { ...questionData, answers: [ ...answers ] }
 		setQuestionData(newQuestionData);
 		handleAddQuestion(newQuestionData, questionNo);
 	}
@@ -43,7 +44,7 @@ const CreateQuestion = ({ handleAddQuestion, questionNo }) => {
 	}
 
 	const handleSingleAnswerChange = (event) => {
-		const newQuestionData = { ...questionData, correctAnswers: [event.target.value] }
+		const newQuestionData = { ...questionData, correctAnswers: [...event.target.value] }
 		setQuestionData(newQuestionData);
 		handleAddQuestion(newQuestionData, questionNo);
 	}
@@ -55,11 +56,11 @@ const CreateQuestion = ({ handleAddQuestion, questionNo }) => {
 				<h3>Question {questionNo + 1} :</h3>
 				<div className={CreateStyles.questionItem}>
 					<label htmlFor="question">Question :</label>
-					<input type="text" id='question' placeholder="Enter Question" name='question' value={question} onChange={handleChange} required/>
+					<input type="text" id='question' placeholder="Enter Question" name='question' value={question} onChange={handleChange} required />
 				</div>
 				<div className={CreateStyles.questionItem}>
 					<label htmlFor="difficulty">Difficulty :</label>
-					<input type="number" min={1} max={10} id='difficulty' name='difficulty' value={difficulty} onChange={handleChange} required/>
+					<input type="number" min={1} max={10} id='difficulty' name='difficulty' value={difficulty} onChange={handleChange} required />
 				</div>
 				<div className={CreateStyles.questionItem}>
 					<label htmlFor="sel1">Question Type :</label>
@@ -70,15 +71,27 @@ const CreateQuestion = ({ handleAddQuestion, questionNo }) => {
 					</select>
 				</div>
 				<div className={CreateStyles.questionItem}>
-					<label htmlFor="options">Options :</label>
+					<span htmlFor="options">Options :</span>
 					<ol >
-						{answers.map((answer, index) => {
+						{/* {answers.map((answer, index) => {
 							return (
 								<li key={index}>
-									<input type="text" placeholder="Enter Option" value={questionData.answers[index]} onChange={(event) => handleOptionsChange(event, index)} />
+									<input type="text" placeholder="Enter Option" value={answer} onChange={(event) => handleOptionsChange(event, index)} />
 								</li>
 							)
-						})}
+						})} */}
+						<li>
+							<input type="text"  id={`1${questionNo}`}  placeholder="Enter Option" name={`option1${questionNo}`} className={`1${questionNo}`} value={answers[0]} onChange={(event) => handleOptionsChange(event, 0)} />
+						</li>
+						<li>
+							<input type="text" id={`2${questionNo}`} placeholder="Enter Option" name={`option2${questionNo}`}   className={`2${questionNo}`} value={answers[1]} onChange={(event) => handleOptionsChange(event, 1)} />
+						</li>
+						<li>
+							<input type="text" id={`3${questionNo}`} placeholder="Enter Option" name={`option3${questionNo}`}  className={`3${questionNo}`}  value={answers[2]} onChange={(event) => handleOptionsChange(event, 2)} />
+						</li>
+						<li>
+							<input type="text" id={`4${questionNo}`} placeholder="Enter Option" name={`option4${questionNo}`}  className={`4${questionNo}`}   value={answers[3]} onChange={(event) => handleOptionsChange(event, 3)} />
+						</li>
 					</ol>
 					{questionType === "MCA" ? (
 						<ol>
@@ -95,8 +108,8 @@ const CreateQuestion = ({ handleAddQuestion, questionNo }) => {
 							{answers.map((answer, index) => {
 								return (
 									<li key={index}>
-										<input type="radio" name="singleOption" value={answer} onChange={handleSingleAnswerChange} />
-										<label htmlFor="singleOption">   Is Correct</label>
+										<input type="radio" name={`singleOption${questionNo}`} value={answer} onChange={handleSingleAnswerChange} />
+										<label htmlFor={`singleOption${questionNo}`} >   Is Correct</label>
 									</li>
 								)
 							})}

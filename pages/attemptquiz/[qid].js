@@ -14,7 +14,6 @@ function AttemptQuiz() {
 		setCurrentQues(currentQues + 1);
 	}
 
-	if (questions) console.log(questions[0])
 	useEffect(() => {
 		const getOneQuiz = async () => {
 			const token = localStorage.getItem('token')
@@ -39,36 +38,39 @@ function AttemptQuiz() {
 
 	return (
 		<>
-			{questions && Object.keys(questions).map((key) => {
-				// console.log(questions[key])
-			})}
+
 			<h2>{title}</h2>
 			<p>{description}</p>
-			{(questions && quizData.questions.question1) &&
+			{questions && questions.length > 0 && (
 				<div className={quizStyles.quizContainer} id="quiz">
 					<div className={quizStyles.quizHeader}>
-						<h2 id="question">{questions.question1}</h2>
+						<div className={quizStyles.quesDetails}>
+							<span><b>Question Type : </b>{ questions[currentQues].questionType === "SCA" ? "Single Correct Answer" : "Multiple Correct Answer"}</span>
+							<span><b>Difficulty : </b>{questions[currentQues].difficulty}</span>
+						</div>
+						<h2 id="question">{questions[currentQues].question}</h2>
 						<ul>
 							<li>
 								<input type="radio" name="answer" id="a" />
-								<label htmlFor="a" id="a_text">{questions.question1.options1}</label>
+								<label htmlFor="a" id="a_text">{questions[currentQues].answers[0]}</label>
 							</li>
 							<li>
 								<input type="radio" name="answer" id="b" />
-								<label htmlFor="b" id="b_text">{questions.question1.options2}</label>
+								<label htmlFor="b" id="b_text">{questions[currentQues].answers[1]}</label>
 							</li>
 							<li>
 								<input type="radio" name="answer" id="c" />
-								<label htmlFor="c" id="c_text">{questions.question1.options3}</label>
+								<label htmlFor="c" id="c_text">{questions[currentQues].answers[2]}</label>
 							</li>
 							<li>
 								<input type="radio" name="answer" id="d" />
-								<label htmlFor="d" id="d_text">{questions.question1.options4}</label>
+								<label htmlFor="d" id="d_text">{questions[currentQues].answers[3]}</label>
 							</li>
 						</ul>
 					</div>
 					<button onClick={handleNextClick}>Next</button>
-				</div>}
+				</div>
+			)}
 		</>
 	)
 }

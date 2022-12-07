@@ -12,18 +12,8 @@
   gap: 20px;
 } */
 
-.createQuestionContainer {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  grid-gap: 20px;
-  justify-items: start;
-  align-items: start;
-  border-radius: 20px;
-}
-.createQuestion {
-  display: flex;
-  gap: 10px;
-}
+
+
 
 .allquizLink {
 	display: flex;
