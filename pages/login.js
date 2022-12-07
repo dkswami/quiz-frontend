@@ -47,11 +47,11 @@ function login() {
 			<h2>Login Page</h2>
 			<form onSubmit={handleSubmit} >
 				<div className="form-group">
-					<label htmlFor="email">Email address:</label>
+					<label htmlFor="email">Email address :</label>
 					<input type="email" className="form-control" id="email" placeholder="Enter Email"  name='email' value={email} onChange={handleChange} />
 				</div>
 				<div className="form-group">
-					<label htmlFor="pwd">Password:</label>
+					<label htmlFor="pwd">Password :</label>
 					<input type="password" className="form-control" id="pwd" placeholder="Password" name='password' value={password} onChange={handleChange} />
 				</div>
 				<div className="checkbox">

@@ -1,0 +1,17 @@
+.questionContainer {
+  width: 100%;
+  padding: 0px 24px 12px 24px;
+  border: 1px solid #ccc;
+  border-radius: 13px;
+  background-color: aqua;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.questionItem {
+  display: flex;
+  gap: 17px;
+  flex-wrap: wrap;
+}

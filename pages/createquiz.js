@@ -1,22 +1,13 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import Createstyles from '../styles/CreateQuiz.module.css';
 import CreateQuestion from '../components/create-question';
 
 const defaultQuizData = {
 	title: "",
 	description: "",
 	difficultyLevel: 5,
-	questions: [
-		{
-			question: "",
-			questionType: "", //SCA: single correct answer, MCA: multiple correct answer
-			difficulty: 2,
-			correctAnswers: [],
-			answers: [],
-		}
-	],
+	questions: [],
 };
 
 const CreateQuiz = () => {
@@ -31,8 +22,10 @@ const CreateQuiz = () => {
 	}
 
 	const handleAddQuestion = (questionToAdd, questionNo) => {
-		setQuizData({ ...quizData, questions: { ...questions, [questionNo]: questionToAdd } })
+		questions[questionNo] = questionToAdd;
+		setQuizData({ ...quizData, questions: questions })
 	}
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const token = localStorage.getItem('token')
@@ -46,10 +39,11 @@ const CreateQuiz = () => {
 			console.log(response)
 			if (response.data._id) {
 				alert("Quiz created successfully");
-				router.push({
-					pathname: '/attemptQuiz/[qid]',
-					query: { qid: response.data._id },
-				})
+				// router.push({
+				// 	pathname: '/attemptQuiz/[qid]',
+				// 	query: { qid: response.data._id },
+				// })
+				router.push('/allquiz')
 			}
 		} catch (error) {
 			console.log(error)
@@ -59,40 +53,24 @@ const CreateQuiz = () => {
 
 	return (
 		<>
-			<button type="button" className="btn btn-primary">Primary</button>
-			{/* <h2>Create a Quiz for user</h2>
-			<form onSubmit={handleSubmit} className={Createstyles.createQuizContainer}>
-				<div className={Loginstyles.createQuestion}>
-					<label htmlFor="title">Quiz Title</label>
-					<input type="text" placeholder="Title" name='title' value={title} onChange={handleChange} required />
+			<h2>Create a Quiz for user</h2>
+			<form onSubmit={handleSubmit}>
+				<div className="form-group">
+					<label htmlFor="title">Quiz Title :</label>
+					<input type="text" className="form-control" id="title" placeholder="Title" name='title' value={title} onChange={handleChange} required />
 				</div>
-				<div className={Loginstyles.createQuestion}>
-					<label htmlFor="description">Quiz Description</label>
-					<input type="text" placeholder="Enter Description" name='description' value={description} onChange={handleChange} required />
+				<div className="form-group">
+					<label htmlFor="description">Quiz Description :</label>
+					<input type="text" className="form-control" id="description" placeholder="Enter Description" name='description' value={description} onChange={handleChange} required />
 				</div>
 				<p>As mentioned in the mail there will be 10 question and the quiz will have total 50 marks</p>
-				<h3>Question 1:</h3>
-				<CreateQuestion questionNo='question1' handleAddQuestion={handleAddQuestion} />
-				<h3>Question 2:</h3>
-				<CreateQuestion questionNo='question2' handleAddQuestion={handleAddQuestion} />
-				<h3>Question 3:</h3>
-				<CreateQuestion questionNo='question3' handleAddQuestion={handleAddQuestion} />
-				<h3>Question 4:</h3>
-				<CreateQuestion questionNo='question4' handleAddQuestion={handleAddQuestion} />
-				<h3>Question 5:</h3>
-				<CreateQuestion questionNo='question5' handleAddQuestion={handleAddQuestion} />
-				<h3>Question 6:</h3>
-				<CreateQuestion questionNo='question6' handleAddQuestion={handleAddQuestion} />
-				<h3>Question 7:</h3>
-				<CreateQuestion questionNo='question7' handleAddQuestion={handleAddQuestion} />
-				<h3>Question 8:</h3>
-				<CreateQuestion questionNo='question8' handleAddQuestion={handleAddQuestion} />
-				<h3>Question 9:</h3>
-				<CreateQuestion questionNo='question9' handleAddQuestion={handleAddQuestion} />
-				<h3>Question 10:</h3>
-				<CreateQuestion questionNo='question10' handleAddQuestion={handleAddQuestion} />
-				<button>Create Quiz</button>
-			</form> */}
+				{
+					[...Array(10)].map((_, i) => {
+						return <CreateQuestion key={i} questionNo={i} handleAddQuestion={handleAddQuestion} />
+					})
+				}
+				<button type="submit" className="btn btn-primary center-block">Submit</button>
+			</form>
 		</>
 	)
 }
