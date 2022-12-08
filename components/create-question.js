@@ -9,6 +9,8 @@ const defaultQuestionData = {
 	answers: ["", "", "", ""],
 }
 
+let anss = ["", "", "", ""];
+
 const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 	const [questionData, setQuestionData] = useState(defaultQuestionData)
 	const { question, questionType, difficulty, correctAnswers, answers } = questionData;
@@ -21,14 +23,13 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 	}
 
 	const handleOptionsChange = (event, index) => {
-		event.preventDefault();
-		answers[index] = event.target.value;
-		const newQuestionData = { ...questionData, answers: [ ...answers ] }
+		anss[index] = event.target.value;
+		const newQuestionData = { ...questionData, answers: [ ...anss ] }
 		setQuestionData(newQuestionData);
 		handleAddQuestion(newQuestionData, questionNo);
 	}
 
-	const handleMultipleAnswersChange = (event, index) => {
+	const handleMultipleAnswersChange = (event) => {
 		const { value, checked } = event.target;
 		if (checked) {
 			const newQuestionData = { ...questionData, correctAnswers: [...correctAnswers, value] }
@@ -65,7 +66,6 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 				<div className={CreateStyles.questionItem}>
 					<label htmlFor="sel1">Question Type :</label>
 					<select className="form-control" id="sel1" name='questionType' onChange={handleChange} required>
-						<option value="">-- Select --</option>
 						<option value="SCA"> Single Correct Answer</option>
 						<option value="MCA"> Multiple Correct Answer</option>
 					</select>
@@ -73,15 +73,15 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 				<div className={CreateStyles.questionItem}>
 					<span htmlFor="options">Options :</span>
 					<ol >
-						{/* {answers.map((answer, index) => {
+						{answers.map((answer, index) => {
 							return (
-								<li key={index}>
-									<input type="text" placeholder="Enter Option" value={answer} onChange={(event) => handleOptionsChange(event, index)} />
+								<li key={`${questionNo}${index}`}>
+									<input key={`${questionNo}${index}`} type="text" placeholder="Enter Option"  name={`option${index}${questionNo}`} value={answer} onChange={(event) => handleOptionsChange(event, index)} />
 								</li>
 							)
-						})} */}
-						<li>
-							<input type="text"  id={`1${questionNo}`}  placeholder="Enter Option" name={`option1${questionNo}`} className={`1${questionNo}`} value={answers[0]} onChange={(event) => handleOptionsChange(event, 0)} />
+						})}
+						{/* <li>
+							<input type="text"  id={`1${questionNo}`}  placeholder="Enter Option" className={`1${questionNo}`} value={answers[0]} onChange={(event) => handleOptionsChange(event, 0)} />
 						</li>
 						<li>
 							<input type="text" id={`2${questionNo}`} placeholder="Enter Option" name={`option2${questionNo}`}   className={`2${questionNo}`} value={answers[1]} onChange={(event) => handleOptionsChange(event, 1)} />
@@ -91,13 +91,13 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 						</li>
 						<li>
 							<input type="text" id={`4${questionNo}`} placeholder="Enter Option" name={`option4${questionNo}`}  className={`4${questionNo}`}   value={answers[3]} onChange={(event) => handleOptionsChange(event, 3)} />
-						</li>
+						</li> */}
 					</ol>
 					{questionType === "MCA" ? (
 						<ol>
 							{answers.map((answer, index) => {
 								return (
-									<li key={index}>
+									<li key={`${questionNo}${index}`}>
 										<input type="checkbox" name="multipleOptions" value={answer} onChange={handleMultipleAnswersChange} />
 										<label htmlFor="multipleOptions">   Is Correct</label>
 									</li>
@@ -107,7 +107,7 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 						<ol>
 							{answers.map((answer, index) => {
 								return (
-									<li key={index}>
+									<li key={`${questionNo}${index}`}>
 										<input type="radio" name={`singleOption${questionNo}`} value={answer} onChange={handleSingleAnswerChange} />
 										<label htmlFor={`singleOption${questionNo}`} >   Is Correct</label>
 									</li>
