@@ -21,6 +21,9 @@ const Quiz = () => {
 				setAllQuizData(response.data);
 			} catch (error) {
 				console.log(error)
+				if(error.message === "Network Error") {
+					alert("Network Error")
+				}
 			}
 		}
 		getAllQuiz();

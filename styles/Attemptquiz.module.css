@@ -8,10 +8,15 @@
 .quizHeader {
   padding: 4rem;
 }
+
+.quesDetails {
+  display: flex;
+  justify-content: space-between;
+}
+
 .quizContainer h2 {
   padding: 1rem;
   text-align: center;
-  margin: 0;
 }
 .quizContainer ul {
   list-style-type: none;
@@ -20,11 +25,16 @@
 .quizContainer ul li {
   font-size: 1.2rem;
   margin: 1rem 0;
+  border: 2px solid #000;
+  border-radius: 10px;
+  padding: 8px;
+  margin-left: 20px;
 }
-.quizContainer  ul li label {
+.quizContainer ul li label {
+  padding: 1rem;
   cursor: pointer;
 }
-.quizContainer  button {
+.quizContainer button {
   background-color: #03cae4;
   color: #fff;
   border: none;
@@ -35,7 +45,7 @@
   font-family: inherit;
   padding: 1.3rem;
 }
-.quizContainer  button:hover {
+.quizContainer button:hover {
   background-color: #04adc4;
 }
 .quizContainer button:focus {
