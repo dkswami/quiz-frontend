@@ -11,7 +11,7 @@ const defaultFormFields = {
 function login() {
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { email, password } = formFields;
-	const { setCurrentUser } = useContext(UserContext);
+	const { setCurrentUser, setIsLoggedIn } = useContext(UserContext);
 	const router = useRouter();
 
 	const handleChange = (event) => {
@@ -21,34 +21,36 @@ function login() {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		try {
-			const response = await axios.post('http://localhost:4000/api/v1/auth/login', formFields);
-
-			localStorage.setItem("token", response.data.token);
-			setCurrentUser(response.data.user);
-			if (response.data === "") {
-				return alert("Invalid email or password");
+		const response = await axios.post('/api/login', formFields);
+		if(response.data.message.id) {
+			setCurrentUser(response.data.message);
+			setIsLoggedIn(true);
+			alert(`Welcome To Quiz App ${response.data.message.name}`);
+			if (response.data.message.role === "admin") {
+				router.push('/users/createquiz');
 			} else {
-				alert("Login successful");
-				if (response.data.user.role === "admin") {
-					router.push('/createquiz');
-				} else {
-					router.push('/quiz')
-				}
+				router.push('/users/allquiz')
 			}
-		} catch (error) {
-			console.log(error)
 		}
-
+		else if (response.data.message === "Invalid credentials") {
+			alert("Invalid email or password");
+		}
+		else if (response.data.message === "failed to fetch data") {
+			alert("Server is down");
+		}
+		else {
+			alert("Something went wrong Try again later");
+		}
 	}
+	
 	console.log(formFields)
 	return (
-		<>		
+		<>
 			<h2>Login Page</h2>
 			<form onSubmit={handleSubmit} >
 				<div className="form-group">
 					<label htmlFor="email">Email address :</label>
-					<input type="email" className="form-control" id="email" placeholder="Enter Email"  name='email' value={email} onChange={handleChange} />
+					<input type="email" className="form-control" id="email" placeholder="Enter Email" name='email' value={email} onChange={handleChange} />
 				</div>
 				<div className="form-group">
 					<label htmlFor="pwd">Password :</label>
@@ -56,7 +58,7 @@ function login() {
 				</div>
 				<div className="checkbox">
 					<label><input type="checkbox" /> Remember me</label>
-				</div>				
+				</div>
 				<button type="submit" className="btn btn-primary">login</button>
 			</form>
 		</>

@@ -4,10 +4,13 @@ import { useRouter } from 'next/router'
 import quizStyles from '../../styles/Attemptquiz.module.css';
 
 const defaultAttemptData = {
+	quizTitle: "",
+	quizDescription: "",
+	quizId: "",
+	attemptedBy: "",
 	userScore: 0,
 	total: 50,
-	scoreData: [],
-	attempted_by: ""
+	scoreData: [],	
 }
 
 const defaultScoreData = {
@@ -17,7 +20,7 @@ const defaultScoreData = {
 
 let currentDifficulty = 5;
 
-function AttemptQuiz() {
+function AttemptQuiz({token_data}) {
 	const [quizData, setQuizData] = useState({});
 	const { title, description, difficultyLevel, questions } = quizData;
 
@@ -85,10 +88,9 @@ function AttemptQuiz() {
 
 	useEffect(() => {
 		const getOneQuiz = async () => {
-			const token = localStorage.getItem('token')
 			const config = {
 				headers: {
-					Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${token_data}`,
 				},
 			}
 			try {
@@ -146,6 +148,10 @@ function AttemptQuiz() {
 			)}
 		</>
 	)
+}
+
+export function getServerSideProps({ req, res }) {
+	return { props: { token_data: req.cookies.token || "" } };
 }
 
 export default AttemptQuiz

@@ -27,6 +27,7 @@ function signup() {
 		} else {
 			alert("User with this email already exists")
 		}
+		console.log(response)
 	}
 
 	return (
