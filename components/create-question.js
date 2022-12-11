@@ -10,6 +10,19 @@ const defaultQuestionData = {
 	answers: ["", "", "", ""],
 }
 
+const difficultyOptions = [
+	{ value: 1, label: '1', isDisabled: false },
+	{ value: 2, label: '2', isDisabled: false },
+	{ value: 3, label: '3', isDisabled: false},
+	{ value: 4, label: '4', isDisabled: false},
+	{ value: 5, label: '5', isDisabled: false },
+	{ value: 6, label: '6', isDisabled: false },
+	{ value: 7, label: '7', isDisabled: false },
+	{ value: 8, label: '8', isDisabled: false },
+	{ value: 9, label: '9', isDisabled: false },
+	{ value: 10, label: '10', isDisabled: false }
+]
+
 const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 	const [questionData, setQuestionData] = useState(defaultQuestionData)
 	const { question, questionType, difficulty, correctAnswers, answers } = questionData;
@@ -80,7 +93,7 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 						{answers.map((answer, index) => {
 							return (
 								<li key={index}>
-									<input type="text" placeholder="Enter Option"  name={`option${index}${questionNo}`} value={answer} onChange={(event) => handleOptionsChange(event, index)} />
+									<input type="text" placeholder="Enter Option"  name={`option${index}${questionNo}`} value={answers[index]} onChange={(event) => handleOptionsChange(event, index)} />
 								</li>
 							)
 						})}
