@@ -1,44 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Select from 'react-select';
 import CreateStyles from '../styles/CreateQuiz.module.css';
 
-const defaultQuestionData = {
-	question: "",
-	questionType: "", //SCA: single correct answer, MCA: multiple correct answer
-	difficulty: 5,
-	correctAnswers: [],
-	answers: ["", "", "", ""],
-}
-
-const difficultyOptions = [
-	{ value: 1, label: '1', isDisabled: false },
-	{ value: 2, label: '2', isDisabled: false },
-	{ value: 3, label: '3', isDisabled: false},
-	{ value: 4, label: '4', isDisabled: false},
-	{ value: 5, label: '5', isDisabled: false },
-	{ value: 6, label: '6', isDisabled: false },
-	{ value: 7, label: '7', isDisabled: false },
-	{ value: 8, label: '8', isDisabled: false },
-	{ value: 9, label: '9', isDisabled: false },
-	{ value: 10, label: '10', isDisabled: false }
+const defaultDifficultyOptions = [
+	{ value: 1, label: '1', isdisabled: false },
+	{ value: 2, label: '2', isdisabled: false },
+	{ value: 3, label: '3', isdisabled: false },
+	{ value: 4, label: '4', isdisabled: false },
+	{ value: 5, label: '5', isdisabled: false },
+	{ value: 6, label: '6', isdisabled: false },
+	{ value: 7, label: '7', isdisabled: false },
+	{ value: 8, label: '8', isdisabled: false },
+	{ value: 9, label: '9', isdisabled: false },
+	{ value: 10, label: '10', isdisabled: false }
 ]
 
-const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
+const defaultCurrentDifficulty = { value:22, label: 'Not Selected', isdisabled: false };
+
+const CreateQuestion = ({ handleAddQuestion, defaultQuestionData, handleSubmit }) => {
 	const [questionData, setQuestionData] = useState(defaultQuestionData)
+	const [questionNo, setQuestionNo] = useState(0);
 	const { question, questionType, difficulty, correctAnswers, answers } = questionData;
+
+	const [selectedDifficulties, setSelectedDifficulties] = useState([]);
+	const [difficultyOptions, setDifficultyOptions] = useState(defaultDifficultyOptions);
+	const [currentDifficulty, setCurrentDifficulty] = useState(defaultCurrentDifficulty);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		const newQuestionData = { ...questionData, [name]: value };
 		setQuestionData(newQuestionData);
-		handleAddQuestion(newQuestionData, questionNo);
 	}
 
 	const handleOptionsChange = (event, index) => {
-		anss[index] = event.target.value;
-		const newQuestionData = { ...questionData, answers: [ ...anss ] }
+		answers[index] = event.target.value;
+		const newQuestionData = { ...questionData, answers: [...answers] }
 		setQuestionData(newQuestionData);
-		handleAddQuestion(newQuestionData, questionNo);
 	}
 
 	const handleMultipleAnswersChange = (event) => {
@@ -46,28 +43,58 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 		if (checked) {
 			const newQuestionData = { ...questionData, correctAnswers: [...correctAnswers, value] }
 			setQuestionData(newQuestionData)
-			handleAddQuestion(newQuestionData, questionNo);
 		} else {
 			const index = correctAnswers.indexOf(value);
 			correctAnswers.splice(index, 1);
 			const newQuestionData = { ...questionData, correctAnswers: correctAnswers }
 			setQuestionData(newQuestionData);
-			handleAddQuestion(newQuestionData, questionNo);
 		}
 	}
 
 	const handleSingleAnswerChange = (event) => {
-		const newQuestionData = { ...questionData, correctAnswers: [...event.target.value] }
+		const newQuestionData = { ...questionData, correctAnswers: [event.target.value] }
 		setQuestionData(newQuestionData);
-		handleAddQuestion(newQuestionData, questionNo);
 	}
 
 	const handleDifficultyChange = (event) => {
-		console.log(event)
+		setQuestionData({ ...questionData, difficulty: event.value });
+		setCurrentDifficulty(event);
 	}
 
+	const handleNextButtonClick = (e) => {
+		e.preventDefault();
+		if (selectedDifficulties.includes(questionData.difficulty) || currentDifficulty.value === 11) {
+			alert('Select a difficulty level');
+		} else {
+			setSelectedDifficulties([...selectedDifficulties, questionData.difficulty])
+			if (correctAnswers.length < 1) {
+				alert('Please select atleast one correct answer')
+			} else {
+				handleAddQuestion(questionData, questionNo);
+				setQuestionData(defaultQuestionData);
+				setCurrentDifficulty(defaultCurrentDifficulty);
+				if (questionNo < 9) {
+					setQuestionNo(questionNo + 1);
+				}
+				else {
+					handleSubmit();
+				}
+			}
+		}
+	}
+
+	useEffect(() => {
+		const newDifficultyOptions = difficultyOptions.map((option) => {
+			if (selectedDifficulties.includes(option.value)) {
+				return { ...option, isdisabled: true }
+			}
+			return option;
+		});
+		setDifficultyOptions(newDifficultyOptions);
+	}, [selectedDifficulties])
+
 	return (
-		<>
+		<form onSubmit={handleNextButtonClick}>
 
 			<div className={CreateStyles.questionContainer}>
 				<h3>Question {questionNo + 1} :</h3>
@@ -77,12 +104,18 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 				</div>
 				<div className={CreateStyles.questionItem}>
 					<label htmlFor="difficulty">Difficulty :</label>
-					{/* <input type="number" min={1} max={10} id='difficulty' name='difficulty' value={difficulty} onChange={handleChange} required /> */}
-					<Select options={difficultyOptions} onChange={handleDifficultyChange}/>
+					<Select
+						className={CreateStyles.select}
+						options={difficultyOptions}
+						onChange={handleDifficultyChange}
+						isOptionDisabled={(option) => option.isdisabled}
+						value={currentDifficulty}
+						required
+					/>
 				</div>
 				<div className={CreateStyles.questionItem}>
 					<label htmlFor="sel1">Question Type :</label>
-					<select className="form-control" id="sel1" name='questionType' onChange={handleChange} required>
+					<select className="form-control" id="sel1" name='questionType' onChange={handleChange} defaultValue="SCA" required>
 						<option value="SCA"> Single Correct Answer</option>
 						<option value="MCA"> Multiple Correct Answer</option>
 					</select>
@@ -93,22 +126,10 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 						{answers.map((answer, index) => {
 							return (
 								<li key={index}>
-									<input type="text" placeholder="Enter Option"  name={`option${index}${questionNo}`} value={answers[index]} onChange={(event) => handleOptionsChange(event, index)} />
+									<input type="text" placeholder="Enter Option" name={`option${index}${questionNo}`} value={answer} onChange={(event) => handleOptionsChange(event, index)} required />
 								</li>
 							)
 						})}
-						{/* <li>
-							<input type="text"  id={`1${questionNo}`}  placeholder="Enter Option" className={`1${questionNo}`} value={answers[0]} onChange={(event) => handleOptionsChange(event, 0)} />
-						</li>
-						<li>
-							<input type="text" id={`2${questionNo}`} placeholder="Enter Option" name={`option2${questionNo}`}   className={`2${questionNo}`} value={answers[1]} onChange={(event) => handleOptionsChange(event, 1)} />
-						</li>
-						<li>
-							<input type="text" id={`3${questionNo}`} placeholder="Enter Option" name={`option3${questionNo}`}  className={`3${questionNo}`}  value={answers[2]} onChange={(event) => handleOptionsChange(event, 2)} />
-						</li>
-						<li>
-							<input type="text" id={`4${questionNo}`} placeholder="Enter Option" name={`option4${questionNo}`}  className={`4${questionNo}`}   value={answers[3]} onChange={(event) => handleOptionsChange(event, 3)} />
-						</li> */}
 					</ol>
 					{questionType === "MCA" ? (
 						<ol>
@@ -125,17 +146,17 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 							{answers.map((answer, index) => {
 								return (
 									<li key={`${questionNo}${index}`}>
-										<input type="radio" name={`singleOption${questionNo}`} value={answer} onChange={handleSingleAnswerChange} />
+										<input type="radio" name={`singleOption${questionNo}`} value={answer} onChange={handleSingleAnswerChange} required />
 										<label htmlFor={`singleOption${questionNo}`} >   Is Correct</label>
 									</li>
 								)
 							})}
 						</ol>
 					)}
-
 				</div>
 			</div>
-		</>
+			<button type="submit" className="btn btn-primary center-block"> Next</button>
+		</form>
 	)
 }
 

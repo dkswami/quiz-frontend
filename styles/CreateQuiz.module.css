@@ -15,3 +15,7 @@
   gap: 17px;
   flex-wrap: wrap;
 }
+
+.select {
+	width: 90%;
+}
