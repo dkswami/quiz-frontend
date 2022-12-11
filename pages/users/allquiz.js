@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/router'
-import Loginstyles from '../styles/Login.module.css';
+import Loginstyles from '../../styles/Login.module.css';
 
 
-const Quiz = () => {
+const Quiz = ({ token_data }) => {
 	const [allQuizData, setAllQuizData] = useState([]);
 	const router = useRouter()
 
 	useEffect(() => {
 		const getAllQuiz = async () => {
-			const token = localStorage.getItem('token')
 			const config = {
 				headers: {
-					Authorization: `Bearer ${token}`,
+					Authorization: `Bearer ${token_data}`,
 				},
 			}
 			try {
@@ -21,7 +20,7 @@ const Quiz = () => {
 				setAllQuizData(response.data);
 			} catch (error) {
 				console.log(error)
-				if(error.message === "Network Error") {
+				if (error.message === "Network Error") {
 					alert("Network Error")
 				}
 			}
@@ -37,11 +36,11 @@ const Quiz = () => {
 				return (
 					<div key={quiz._id}>
 						<h2>{quiz.title}</h2>
-						<div className={Loginstyles.allquizLink} onClick={() =>{
+						<div className={Loginstyles.allquizLink} onClick={() => {
 							router.push({
 								pathname: '/attemptquiz/[qid]',
 								query: { qid: quiz._id },
-							     })
+							})
 						}}>
 							<span>Unique link for this quiz :</span>
 							<a>{`http://localhost:3000/attemptquiz/${quiz._id}`}</a>
@@ -52,6 +51,10 @@ const Quiz = () => {
 			})}
 		</div>
 	)
+}
+
+export function getServerSideProps({ req, res }) {
+	return { props: { token_data: req.cookies.token || "" } };
 }
 
 export default Quiz;

@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import CreateQuestion from '../components/create-question';
+import CreateQuestion from '../../components/create-question';
+import { UserContext } from '../../contexts/user.context';
 
 const defaultQuizData = {
 	title: "",
@@ -10,7 +11,9 @@ const defaultQuizData = {
 	questions: [],
 };
 
-const CreateQuiz = () => {
+const CreateQuiz = ({ token_data }) => {
+	const { setToken } = useContext(UserContext);
+
 	const [quizData, setQuizData] = useState(defaultQuizData);
 	const { title, description, questions } = quizData;
 	const router = useRouter();
@@ -29,10 +32,9 @@ const CreateQuiz = () => {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const token = localStorage.getItem('token')
 		const config = {
 			headers: {
-				Authorization: `Bearer ${token}`,
+				Authorization: `Bearer ${token_data}`,
 			},
 		}
 		try {
@@ -50,6 +52,10 @@ const CreateQuiz = () => {
 			console.log(error)
 		}
 	}
+
+	useEffect(() => {
+		setToken(token_data);
+	}, [])
 
 	console.log(quizData);
 
@@ -78,5 +84,10 @@ const CreateQuiz = () => {
 		</>
 	)
 }
+
+export function getServerSideProps({ req, res }) {
+	return { props: { token_data: req.cookies.token || "" } };
+}
+
 
 export default CreateQuiz;

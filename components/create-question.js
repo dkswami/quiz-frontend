@@ -9,8 +9,6 @@ const defaultQuestionData = {
 	answers: ["", "", "", ""],
 }
 
-let anss = ["", "", "", ""];
-
 const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 	const [questionData, setQuestionData] = useState(defaultQuestionData)
 	const { question, questionType, difficulty, correctAnswers, answers } = questionData;
@@ -23,8 +21,8 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 	}
 
 	const handleOptionsChange = (event, index) => {
-		anss[index] = event.target.value;
-		const newQuestionData = { ...questionData, answers: [ ...anss ] }
+		answers[index] = event.target.value;
+		const newQuestionData = { ...questionData, answers: [ ...answers ] }
 		setQuestionData(newQuestionData);
 		handleAddQuestion(newQuestionData, questionNo);
 	}
@@ -75,8 +73,8 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 					<ol >
 						{answers.map((answer, index) => {
 							return (
-								<li key={`${questionNo}${index}`}>
-									<input key={`${questionNo}${index}`} type="text" placeholder="Enter Option"  name={`option${index}${questionNo}`} value={answer} onChange={(event) => handleOptionsChange(event, index)} />
+								<li key={index}>
+									<input type="text" placeholder="Enter Option"  name={`option${index}${questionNo}`} value={answer} onChange={(event) => handleOptionsChange(event, index)} />
 								</li>
 							)
 						})}
