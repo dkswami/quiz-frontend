@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/router'
-import quizStyles from '../../styles/Attemptquiz.module.css';
+import quizStyles from '../../../styles/Attemptquiz.module.css';
 
 const defaultAttemptData = {
 	userScore: 0,

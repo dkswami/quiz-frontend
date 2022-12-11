@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Select from 'react-select';
 import CreateStyles from '../styles/CreateQuiz.module.css';
 
 const defaultQuestionData = {
@@ -8,8 +9,6 @@ const defaultQuestionData = {
 	correctAnswers: [],
 	answers: ["", "", "", ""],
 }
-
-let anss = ["", "", "", ""];
 
 const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 	const [questionData, setQuestionData] = useState(defaultQuestionData)
@@ -50,6 +49,10 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 		handleAddQuestion(newQuestionData, questionNo);
 	}
 
+	const handleDifficultyChange = (event) => {
+		console.log(event)
+	}
+
 	return (
 		<>
 
@@ -61,7 +64,8 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 				</div>
 				<div className={CreateStyles.questionItem}>
 					<label htmlFor="difficulty">Difficulty :</label>
-					<input type="number" min={1} max={10} id='difficulty' name='difficulty' value={difficulty} onChange={handleChange} required />
+					{/* <input type="number" min={1} max={10} id='difficulty' name='difficulty' value={difficulty} onChange={handleChange} required /> */}
+					<Select options={difficultyOptions} onChange={handleDifficultyChange}/>
 				</div>
 				<div className={CreateStyles.questionItem}>
 					<label htmlFor="sel1">Question Type :</label>
@@ -75,8 +79,8 @@ const CreateQuestion = ({ questionNo, handleAddQuestion }) => {
 					<ol >
 						{answers.map((answer, index) => {
 							return (
-								<li key={`${questionNo}${index}`}>
-									<input key={`${questionNo}${index}`} type="text" placeholder="Enter Option"  name={`option${index}${questionNo}`} value={answer} onChange={(event) => handleOptionsChange(event, index)} />
+								<li key={index}>
+									<input type="text" placeholder="Enter Option"  name={`option${index}${questionNo}`} value={answer} onChange={(event) => handleOptionsChange(event, index)} />
 								</li>
 							)
 						})}
