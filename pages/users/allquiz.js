@@ -26,8 +26,8 @@ const Quiz = ({ token_data }) => {
 			}
 		}
 		getAllQuiz();
-
 	}, [])
+
 	console.log(allQuizData);
 
 	return (
@@ -38,12 +38,12 @@ const Quiz = ({ token_data }) => {
 						<h2>{quiz.title}</h2>
 						<div className={Loginstyles.allquizLink} onClick={() => {
 							router.push({
-								pathname: '/attemptquiz/[qid]',
+								pathname: '/users/attemptquiz/[qid]',
 								query: { qid: quiz._id },
 							})
 						}}>
 							<span>Unique link for this quiz :</span>
-							<a>{`http://localhost:3000/attemptquiz/${quiz._id}`}</a>
+							<a>{`http://localhost:3000/users/attemptquiz/${quiz._id}`}</a>
 						</div>
 						<p>{quiz.description}</p>
 					</div>
