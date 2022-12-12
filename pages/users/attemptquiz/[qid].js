@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useContext } from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/router'
 import quizStyles from '../../../styles/Attemptquiz.module.css';
+import { UserContext } from '../../../contexts/user.context';
 
 const defaultAttemptData = {
 	quizTitle: "",
@@ -10,7 +11,7 @@ const defaultAttemptData = {
 	attemptedBy: "",
 	userScore: 0,
 	total: 50,
-	scoreData: [],	
+	scoreData: [],
 }
 
 const defaultScoreData = {
@@ -20,7 +21,7 @@ const defaultScoreData = {
 
 let currentDifficulty = 5;
 
-function AttemptQuiz({token_data}) {
+function AttemptQuiz({ token_data }) {
 	const [quizData, setQuizData] = useState({});
 	const { title, description, difficultyLevel, questions } = quizData;
 
@@ -29,56 +30,38 @@ function AttemptQuiz({token_data}) {
 
 	const [currentQues, setCurrentQues] = useState(0);
 	const [currentAnswer, setCurrentAnswer] = useState("");
-	// const [currentDifficulty, setCurrentDifficulty] = useState(5);
+
+	const { currentUser, setToken } = useContext(UserContext);
 
 	const router = useRouter()
 	const quizId = router.query.qid;
 
-	const goToNextQues = () => {
-
+	const evaluate = (newUserScore, newCurrentDifficulty) => {
+		const newScoreData = [...scoreData, { quesNumber: currentQues + 1, currentScore: newUserScore }]
+		setAttemptData({
+			...attemptData,
+			userScore: newUserScore,
+			scoreData: newScoreData
+		})
+		setCurrentQues(questions.findIndex((ques) => ques.difficulty === newCurrentDifficulty))
+		setCurrentAnswer("");
 	}
 
-	const handleNextClick = (event) => {
-		if (currentAnswer !== "") {
-			if (questions[currentQues].correctAnswers.includes(currentAnswer)) {
-				userScore = userScore + 5;
-				const newScoreData = [...scoreData, { quesNumber: currentQues + 1, currentScore: userScore }]
-				setAttemptData({
-					...attemptData,
-					userScore: userScore,
-					scoreData: newScoreData
-				})
-				currentDifficulty = currentDifficulty + 1;
-				//In case we don't have question with current difficulty +1 level.
-				/* while(!questions.includes(ques => ques.difficultyLevel === currentDifficulty)){
-					currentDifficulty = currentDifficulty + 1;
-				} */
-				setCurrentQues(questions.findIndex((ques) => ques.difficulty === currentDifficulty))
-				setCurrentAnswer("");
-			} else {
-				userScore = userScore - 2;
-				const newScoreData = [...scoreData, { quesNumber: currentQues + 1, currentScore: userScore }]
-				setAttemptData({
-					...attemptData,
-					userScore: userScore,
-					scoreData: newScoreData
-				})
-				currentDifficulty = currentDifficulty - 1;
-				//In case we don't have question with current difficulty +1 level.
-				// while(!questions.includes((ques) => ques.difficulty === currentDifficulty)){
-				// 	currentDifficulty = currentDifficulty - 1;
-				// }
-				//console.log(questions.find((ques) => ques.difficulty === currentDifficulty))
-				setCurrentQues(questions.findIndex((ques) => ques.difficulty === currentDifficulty))
-				setCurrentAnswer("");
-			}			
-		} 
-		else {
-			alert("Please select an option");
-		}
-
-		if (currentQues === questions.length - 1) {
+	const handleNextClick = () => {		
+		if (currentQues === (questions.length - 1) || currentDifficulty === 11 || currentDifficulty === 0) {
 			alert("Quiz completed")
+		}
+		else {
+			if (currentAnswer !== "") {
+				if (questions[currentQues].correctAnswers.includes(currentAnswer)) {
+					evaluate(userScore + 5, currentDifficulty + 1);
+				} else {
+					evaluate(userScore - 2, currentDifficulty - 1);
+				}
+			}
+			else {
+				alert("Please select an option");
+			}
 		}
 	}
 
@@ -96,7 +79,13 @@ function AttemptQuiz({token_data}) {
 			try {
 				const response = await axios.get(`http://localhost:4000/api/v1/quiz/${quizId}`, config);
 				setQuizData(response.data);
-
+				setAttemptData({
+					...attemptData,
+					quizTitle: response.data.title,
+					quizDescription: response.data.description,
+					quizId: response.data._id,
+					attemptedBy: currentUser.id
+				})
 			} catch (error) {
 				console.log(error)
 				if (error.message === "Network Error") {
@@ -107,11 +96,12 @@ function AttemptQuiz({token_data}) {
 			}
 		}
 		getOneQuiz();
+		setToken(token_data);
 	}, [quizId])
 
 	useEffect(() => {
-		if (quizData.questions && quizData.questions.length > 0) {
-			setCurrentQues(quizData.questions.findIndex((ques) => ques.difficulty === 5) || 0)
+		if (questions && questions.length > 0) {
+			setCurrentQues(questions.findIndex((ques) => ques.difficulty === 5))
 		}
 	}, [quizData])
 
