@@ -19,12 +19,12 @@ export default function Home({ token_data }) {
 
 			<main className={styles.main}>
 				<h1 className={styles.title}>
-					Welcome to <a href="https://nextjs.org">Next.js!</a>
+					Welcome to Quiz App for Digiaccel
 				</h1>
 
 				<p className={styles.description}>
-					Get started by editing{' '}
-					<code className={styles.code}>pages/index.js</code>
+					Created By Deepak Kumar Swami {` `}
+					<code className={styles.code}>dkswami1820@gmail.com</code>
 				</p>
 			</main>
 
@@ -34,9 +34,9 @@ export default function Home({ token_data }) {
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					Created by{' '}
+					
 					<span className={styles.logo}>
-						D K Swami
+						Connect with me on LinkedIn
 					</span>
 				</a>
 			</footer>

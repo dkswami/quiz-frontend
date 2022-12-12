@@ -16,7 +16,7 @@ const defaultAttemptData = {
 
 const defaultScoreData = {
 	quesNumber: 0,
-	currentScore: 0
+	currScore: 0
 }
 
 let currentDifficulty = 5;
@@ -29,6 +29,7 @@ function AttemptQuiz({ token_data }) {
 	let { userScore, scoreData } = attemptData;
 
 	const [currentQues, setCurrentQues] = useState(0);
+	const [quesCount, setQuesCount] = useState(1);
 	const [currentAnswer, setCurrentAnswer] = useState("");
 
 	const { currentUser, setToken } = useContext(UserContext);
@@ -36,8 +37,12 @@ function AttemptQuiz({ token_data }) {
 	const router = useRouter()
 	const quizId = router.query.qid;
 
+	const handleAnswerChange = (event) => {
+		setCurrentAnswer(event.target.value);
+	}
+
 	const evaluate = (newUserScore, newCurrentDifficulty) => {
-		const newScoreData = [...scoreData, { quesNumber: currentQues + 1, currentScore: newUserScore }]
+		const newScoreData = [...scoreData, { quesNumber: quesCount, currScore: newUserScore }]
 		setAttemptData({
 			...attemptData,
 			userScore: newUserScore,
@@ -45,28 +50,49 @@ function AttemptQuiz({ token_data }) {
 		})
 		setCurrentQues(questions.findIndex((ques) => ques.difficulty === newCurrentDifficulty))
 		setCurrentAnswer("");
+		setQuesCount(quesCount + 1);
 	}
 
-	const handleNextClick = () => {		
-		if (currentQues === (questions.length - 1) || currentDifficulty === 11 || currentDifficulty === 0) {
+	const submitAttemptData = async () => {
+		const config = {
+			headers: {
+				Authorization: `Bearer ${token_data}`,
+			},
+		}
+		try {
+			const response = await axios.post('http://localhost:4000/api/v1/attempt', attemptData, config);
+			console.log(response)
+			if (response.data._id) {
+				alert("Quiz attempted successfully");
+				router.push('/users/attempts')
+			}
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
+	const handleNextClick = () => {
+		if (quesCount > 10 || currentDifficulty >= 10 || currentDifficulty <= 1) {
 			alert("Quiz completed")
+			submitAttemptData();
 		}
 		else {
 			if (currentAnswer !== "") {
 				if (questions[currentQues].correctAnswers.includes(currentAnswer)) {
-					evaluate(userScore + 5, currentDifficulty + 1);
+					currentDifficulty = currentDifficulty + 1;
+					evaluate(userScore + 5, currentDifficulty);
 				} else {
-					evaluate(userScore - 2, currentDifficulty - 1);
+					currentDifficulty = currentDifficulty - 1;
+					evaluate(userScore - 2, currentDifficulty);
 				}
 			}
-			else {
+			else if (currentAnswer === "") {
 				alert("Please select an option");
 			}
+			else {
+				alert("Something went wrong")
+			}
 		}
-	}
-
-	const handleAnswerChange = (event) => {
-		setCurrentAnswer(event.target.value);
 	}
 
 	useEffect(() => {
@@ -105,7 +131,7 @@ function AttemptQuiz({ token_data }) {
 		}
 	}, [quizData])
 
-	console.log(attemptData, currentAnswer, currentDifficulty)
+	console.log(attemptData, currentAnswer, currentDifficulty, quesCount)
 
 	return (
 		<>

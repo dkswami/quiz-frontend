@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import * as d3 from 'd3';
 
-function LineChart({ data, width, height }) {
+function LineChart({ index, data, width, height }) {
 
 	const drawChart = () => {
 		const margin = { top: 50, right: 50, bottom: 50, left: 50 };
@@ -10,15 +10,12 @@ function LineChart({ data, width, height }) {
 		const xMinValue = d3.min(data, d => d.quesNumber);
 		const xMaxValue = d3.max(data, d => d.quesNumber);
 
-		d3.select('#container')
+		d3.select(`#container${index}`)
 			.select('svg')
-			.remove();
-		d3.select('#container')
-			.select('.tooltip')
 			.remove();
 
 		const svg = d3
-			.select('#container')
+			.select(`#container${index}`)
 			.append('svg')
 			.attr('width', width + margin.left + margin.right)
 			.attr('height', height + margin.top + margin.bottom)
@@ -75,11 +72,12 @@ function LineChart({ data, width, height }) {
 	}
 
 	useEffect(() => {
+
 		drawChart();
 	}, [data])
 
 	return (
-		<div id='container'></div>
+		<div id={`container${index}`}></div>
 	)
 }
 

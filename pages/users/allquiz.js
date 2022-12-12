@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios';
 import { useRouter } from 'next/router'
 import Loginstyles from '../../styles/Login.module.css';
-
+import { UserContext } from '../../contexts/user.context';
 
 const Quiz = ({ token_data }) => {
 	const [allQuizData, setAllQuizData] = useState([]);
+
+	const { setToken } = useContext(UserContext);
+
 	const router = useRouter()
 
 	useEffect(() => {
@@ -26,6 +29,7 @@ const Quiz = ({ token_data }) => {
 			}
 		}
 		getAllQuiz();
+		setToken(token_data);
 	}, [])
 
 	console.log(allQuizData);

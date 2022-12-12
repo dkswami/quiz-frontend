@@ -66,7 +66,7 @@ const Attempts = ({ token_data }) => {
 							<span><b>Your Score : </b></span>
 							<span>{attempt.userScore}/{attempt.total}</span>
 						</div>
-						<LineChart data={attempt.scoreData} width={500} height={200} />
+						<LineChart index={index} data={attempt.scoreData} width={500} height={200} />
 						<p>Here is the score data with Question Number on X-axis and Score on Y-axis</p>
 					</div>
 				)
