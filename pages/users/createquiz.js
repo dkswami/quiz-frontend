@@ -59,8 +59,6 @@ const CreateQuiz = ({ token_data }) => {
 		setToken(token_data);
 	}, [])
 
-	console.log(quizData);
-
 	return (
 		<>
 			<h2>Create a Quiz for user</h2>

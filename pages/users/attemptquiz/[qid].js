@@ -73,7 +73,6 @@ function AttemptQuiz({ token_data }) {
 
 	const handleNextClick = () => {
 		if (quesCount > 10 || currentDifficulty >= 10 || currentDifficulty <= 1) {
-			alert("Quiz completed")
 			submitAttemptData();
 		}
 		else {
@@ -131,7 +130,7 @@ function AttemptQuiz({ token_data }) {
 		}
 	}, [quizData])
 
-	console.log(attemptData, currentAnswer, currentDifficulty, quesCount)
+	// console.log(attemptData, currentAnswer, currentDifficulty, quesCount)
 
 	return (
 		<>

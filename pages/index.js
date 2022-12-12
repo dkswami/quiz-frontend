@@ -8,7 +8,7 @@ export default function Home({ token_data }) {
 
 	useEffect(() => {
 		setToken(token_data);
-	}, [])
+	})
 
 	return (
 		<div className={styles.container}>
@@ -33,8 +33,7 @@ export default function Home({ token_data }) {
 					href="https://www.linkedin.com/in/deepak-kumar-swami-030a25136/"
 					target="_blank"
 					rel="noopener noreferrer"
-				>
-					
+				>					
 					<span className={styles.logo}>
 						Connect with me on LinkedIn
 					</span>

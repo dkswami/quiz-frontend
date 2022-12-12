@@ -47,7 +47,6 @@ const Attempts = ({ token_data }) => {
 		setToken(token_data);
 	}, [userId])
 
-	console.log(attemptsData);
 	return (
 		<div>
 			<h2> Your All Attempts will display Here! </h2>

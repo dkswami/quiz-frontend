@@ -30,9 +30,7 @@ const Quiz = ({ token_data }) => {
 		}
 		getAllQuiz();
 		setToken(token_data);
-	}, [])
-
-	console.log(allQuizData);
+	}, [token_data])
 
 	return (
 		<div>

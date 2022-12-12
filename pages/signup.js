@@ -8,7 +8,7 @@ const defaultFormFields = {
 	password: ''
 }
 
-function signup() {
+function SignUp() {
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { name, email, password } = formFields;
 	const router = useRouter();
@@ -52,4 +52,4 @@ function signup() {
 	)
 }
 
-export default signup;
+export default SignUp;

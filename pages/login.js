@@ -8,7 +8,7 @@ const defaultFormFields = {
 	password: ''
 }
 
-function login() {
+function Login() {
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { email, password } = formFields;
 	const { setCurrentUser, setIsLoggedIn } = useContext(UserContext);
@@ -43,7 +43,7 @@ function login() {
 		}
 	}
 	
-	console.log(formFields)
+	// console.log(formFields)
 	return (
 		<>
 			<h2>Login Page</h2>
@@ -65,4 +65,4 @@ function login() {
 	)
 }
 
-export default login;
+export default Login;

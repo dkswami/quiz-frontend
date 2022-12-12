@@ -13,7 +13,6 @@ export const UserProvider = ({ children }) => {
 	const [currentUser, setCurrentUser] = useState({});
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
 	const [token, setToken] = useState(null);
-	console.log(currentUser)
 
 	useEffect(() => {
 		if(token) {
@@ -22,7 +21,7 @@ export const UserProvider = ({ children }) => {
 			setIsLoggedIn(true);
 		}
 	}, [token]);
-	
+	console.log(currentUser)
 	return (
 		<UserContext.Provider value={{ currentUser, setCurrentUser, token, setToken, isLoggedIn, setIsLoggedIn }}>
 			{children}
