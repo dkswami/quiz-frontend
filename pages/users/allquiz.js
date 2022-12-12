@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useRouter } from 'next/router'
 import Loginstyles from '../../styles/Login.module.css';
 import { UserContext } from '../../contexts/user.context';
+const BACKEND_API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_API
+const FRONTEND_URL = process.env.NEXT_PUBLIC_FRONTEND_URL
 
 const Quiz = ({ token_data }) => {
 	const [allQuizData, setAllQuizData] = useState([]);
@@ -19,7 +21,7 @@ const Quiz = ({ token_data }) => {
 				},
 			}
 			try {
-				const response = await axios.get('http://localhost:4000/api/v1/quiz', config);
+				const response = await axios.get(`${BACKEND_API_ENDPOINT}/api/v1/quiz`, config);
 				setAllQuizData(response.data);
 			} catch (error) {
 				console.log(error)
@@ -45,7 +47,7 @@ const Quiz = ({ token_data }) => {
 							})
 						}}>
 							<span>Unique link for this quiz :</span>
-							<a>{`http://localhost:3000/users/attemptquiz/${quiz._id}`}</a>
+							<a>{`${FRONTEND_URL}/users/attemptquiz/${quiz._id}`}</a>
 						</div>
 						<p>{quiz.description}</p>
 					</div>

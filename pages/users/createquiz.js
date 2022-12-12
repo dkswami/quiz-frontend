@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import CreateQuestion from '../../components/create-question';
 import { UserContext } from '../../contexts/user.context';
+const BACKEND_API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_API
 
 const defaultQuizData = {
 	title: "",
@@ -44,7 +45,7 @@ const CreateQuiz = ({ token_data }) => {
 			},
 		}
 		try {
-			const response = await axios.post('http://localhost:4000/api/v1/quiz', quizData, config);
+			const response = await axios.post(`${BACKEND_API_ENDPOINT }/api/v1/quiz`, quizData, config);
 			console.log(response)
 			if (response.data._id) {
 				alert("Quiz created successfully");

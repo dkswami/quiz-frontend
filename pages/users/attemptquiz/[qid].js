@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useRouter } from 'next/router'
 import quizStyles from '../../../styles/Attemptquiz.module.css';
 import { UserContext } from '../../../contexts/user.context';
+const BACKEND_API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_API
 
 const defaultAttemptData = {
 	quizTitle: "",
@@ -60,7 +61,7 @@ function AttemptQuiz({ token_data }) {
 			},
 		}
 		try {
-			const response = await axios.post('http://localhost:4000/api/v1/attempt', attemptData, config);
+			const response = await axios.post(`${BACKEND_API_ENDPOINT}/api/v1/attempt`, attemptData, config);
 			console.log(response)
 			if (response.data._id) {
 				alert("Quiz attempted successfully");
@@ -102,7 +103,7 @@ function AttemptQuiz({ token_data }) {
 				},
 			}
 			try {
-				const response = await axios.get(`http://localhost:4000/api/v1/quiz/${quizId}`, config);
+				const response = await axios.get(`${BACKEND_API_ENDPOINT}/api/v1/quiz/${quizId}`, config);
 				setQuizData(response.data);
 				setAttemptData({
 					...attemptData,

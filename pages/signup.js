@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router';
 import axios from 'axios';
+const BACKEND_API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_API
 
 const defaultFormFields = {
 	name: "",
@@ -12,7 +13,7 @@ function SignUp() {
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { name, email, password } = formFields;
 	const router = useRouter();
-
+	console.log(BACKEND_API_ENDPOINT)
 	const handleChange = (event) => {
 		const { name, value } = event.target;
 		setFormFields({ ...formFields, [name]: value });
@@ -20,7 +21,7 @@ function SignUp() {
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const response = await axios.post('http://localhost:4000/api/v1/auth/register', formFields);
+		const response = await axios.post(`${BACKEND_API_ENDPOINT}/api/v1/auth/register`, formFields);
 		if (response.data.id) {
 			alert("You have successfully registered, please login");
 			router.push('/login')

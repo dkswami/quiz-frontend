@@ -3,6 +3,7 @@ import axios from 'axios';
 import { UserContext } from '../../contexts/user.context';
 import LineChart from '../../components/Line-chart';
 import attemptStyles from '../../styles/attempt.module.css';
+const BACKEND_API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_API
 
 const defaultAttemptData = [
 	{
@@ -37,7 +38,7 @@ const Attempts = ({ token_data }) => {
 				},
 			}
 			try {
-				const response = await axios.get(`http://localhost:4000/api/v1/attempt/${userId}`, config);
+				const response = await axios.get(`${BACKEND_API_ENDPOINT}/api/v1/attempt/${userId}`, config);
 				setAttemptsData(response.data);
 			} catch (error) {
 				console.log(error)

@@ -1,9 +1,10 @@
 import cookie from 'cookie';
 import axios from 'axios';
+const BACKEND_API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_API
 
 export default async function handler(req, res) {
 	try {
-		const result = await axios.post('http://localhost:4000/api/v1/auth/login', req.body);
+		const result = await axios.post(`${BACKEND_API_ENDPOINT}/api/v1/auth/login`, req.body);
 		if (result.status === 201) {
 			res.setHeader('Set-Cookie', cookie.serialize('token', result.data.token, {
 				httpOnly: true,
