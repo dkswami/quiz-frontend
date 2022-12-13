@@ -18,6 +18,7 @@ function SignUp() {
 		const { name, value } = event.target;
 		setFormFields({ ...formFields, [name]: value });
 	}
+	console.log(BACKEND_API_ENDPOINT)
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
