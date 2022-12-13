@@ -21,7 +21,7 @@ const Quiz = ({ token_data }) => {
 				},
 			}
 			try {
-				const response = await axios.get(`${BACKEND_API_ENDPOINT}/api/v1/quiz/`, config);
+				const response = await axios.get(`${BACKEND_API_ENDPOINT}/api/v1/quiz`, config);
 				setAllQuizData(response.data);
 			} catch (error) {
 				console.log(error)
