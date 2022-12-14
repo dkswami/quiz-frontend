@@ -12,7 +12,7 @@ const Quiz = ({ token_data }) => {
 	const { setToken } = useContext(UserContext);
 
 	const router = useRouter()
-
+	console.log(BACKEND_API_ENDPOINT)
 	useEffect(() => {
 		const getAllQuiz = async () => {
 			const config = {
@@ -22,6 +22,7 @@ const Quiz = ({ token_data }) => {
 			}
 			try {
 				const response = await axios.get(`${BACKEND_API_ENDPOINT}/api/v1/quiz`, config);
+				console.log(response)
 				setAllQuizData(response.data);
 			} catch (error) {
 				console.log(error)

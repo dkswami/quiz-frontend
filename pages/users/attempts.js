@@ -30,6 +30,7 @@ const Attempts = ({ token_data }) => {
 	const { currentUser, setToken } = useContext(UserContext);
 	const userId = currentUser.id;
 
+	console.log(BACKEND_API_ENDPOINT)
 	useEffect(() => {
 		const getOneAttempt = async () => {
 			const config = {
@@ -39,6 +40,7 @@ const Attempts = ({ token_data }) => {
 			}
 			try {
 				const response = await axios.get(`${BACKEND_API_ENDPOINT}/api/v1/attempt/${userId}`, config);
+				console.log(response)
 				setAttemptsData(response.data);
 			} catch (error) {
 				console.log(error)
