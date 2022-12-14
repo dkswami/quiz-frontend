@@ -22,6 +22,7 @@ function Login() {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 		const response = await axios.post('/api/login', formFields);
+		console.log(response);
 		if(response.data.message.id) {
 			setCurrentUser(response.data.message);
 			setIsLoggedIn(true);
