@@ -5,7 +5,6 @@ export default function Document() {
 		<Html>
 			<Head>
 			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"></link>
-			<meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 			</Head>
 			<body>
 				<Main />
