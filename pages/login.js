@@ -28,11 +28,9 @@ function Login() {
 			setIsLoggedIn(true);
 			alert(`Welcome To Quiz App ${response.data.message.name}`);
 			if (response.data.message.role === "admin") {
-				router.push('/users/createquiz');
-				window.location.reload();
+				router.push('/');
 			} else {
 				router.push('/')
-				window.location.reload();
 			}
 		}
 		else if (response.data.message === "Invalid credentials") {
