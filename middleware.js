@@ -17,7 +17,7 @@ export default function middleware(req) {
 				return NextResponse.redirect(new URL('/users/allquiz', url))
 			}
 		}
-		else if (url.includes("/allquiz")) {
+		else {
 			return NextResponse.next();
 		}
 	} else {

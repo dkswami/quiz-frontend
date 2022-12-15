@@ -29,8 +29,10 @@ function Login() {
 			alert(`Welcome To Quiz App ${response.data.message.name}`);
 			if (response.data.message.role === "admin") {
 				router.push('/users/createquiz');
+				window.location.reload();
 			} else {
-				router.push('/users/allquiz')
+				router.push('/')
+				window.location.reload();
 			}
 		}
 		else if (response.data.message === "Invalid credentials") {
