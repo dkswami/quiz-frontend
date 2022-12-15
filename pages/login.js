@@ -27,6 +27,7 @@ function Login() {
 			setCurrentUser(response.data.message);
 			setIsLoggedIn(true);
 			alert(`Welcome To Quiz App ${response.data.message.name}`);
+			window.location.reload(true);
 			if (response.data.message.role === "admin") {
 				router.push('/users/createquiz');
 			}
