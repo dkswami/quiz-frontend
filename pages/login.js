@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { UserContext } from '../contexts/user.context';
@@ -8,7 +8,7 @@ const defaultFormFields = {
 	password: ''
 }
 
-function Login() {
+function Login({ token_data}) {
 	const [formFields, setFormFields] = useState(defaultFormFields);
 	const { email, password } = formFields;
 	const { setCurrentUser, setIsLoggedIn } = useContext(UserContext);
@@ -27,11 +27,12 @@ function Login() {
 			setCurrentUser(response.data.message);
 			setIsLoggedIn(true);
 			alert(`Welcome To Quiz App ${response.data.message.name}`);
-			if (response.data.message.role === "admin") {
+			window.location.reload(true);
+			/* if (response.data.message.role === "admin") {
 				router.push('/');
 			} else {
 				router.push('/')
-			}
+			} */
 		}
 		else if (response.data.message === "Invalid credentials") {
 			alert("Invalid email or password");
@@ -43,6 +44,13 @@ function Login() {
 			alert("Something went wrong Try again later");
 		}
 	}
+
+	useEffect(() => {
+		console.log(token_data)
+		if(token_data) {
+			router.push('/');
+		}
+	})
 	
 	// console.log(formFields)
 	return (
@@ -64,6 +72,10 @@ function Login() {
 			</form>
 		</>
 	)
+}
+
+export function getServerSideProps({ req, res }) {
+	return { props: { token_data : req.cookies.cookieToken || "" } };
 }
 
 export default Login;
