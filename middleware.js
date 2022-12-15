@@ -10,7 +10,7 @@ export default function middleware(req) {
 		const { payload } = jwt.decode(value);
 		const userRole = payload.user.role;
 
-		if (url.includes("users/createquiz")) {
+		if (url.includes("/createquiz")) {
 			if (userRole === "admin") {
 				return NextResponse.next();
 			} else {

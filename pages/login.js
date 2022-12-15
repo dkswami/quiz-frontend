@@ -29,7 +29,8 @@ function Login() {
 			alert(`Welcome To Quiz App ${response.data.message.name}`);
 			if (response.data.message.role === "admin") {
 				router.push('/users/createquiz');
-			} else {
+			}
+			else if(response.data.message.role === "user") {
 				router.push('/users/allquiz')
 			}
 		}

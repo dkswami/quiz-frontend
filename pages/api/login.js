@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 		if (result.status === 201) {
 			res.setHeader('Set-Cookie', cookie.serialize('token', result.data.token, {
 				httpOnly: true,
-				secure: process.env.NODE_ENV,
+				secure: false,			// process.env.NODE_ENV,
 				maxAge: 60 * 60,
 				sameSite: 'strict',
 				path: '/',
