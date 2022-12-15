@@ -47,8 +47,11 @@ const Attempts = ({ token_data }) => {
 			}
 		}
 		getOneAttempt();
+	}, [])
+
+	useEffect(() => {
 		setToken(token_data);
-	}, [userId])
+	}, [token_data])
 
 	return (
 		<div>

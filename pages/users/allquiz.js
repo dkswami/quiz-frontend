@@ -31,7 +31,10 @@ const Quiz = ({ token_data }) => {
 				}
 			}
 		}
-		getAllQuiz();
+		getAllQuiz();		
+	}, [])
+
+	useEffect(() => {
 		setToken(token_data);
 	}, [token_data])
 
