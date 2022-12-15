@@ -11,7 +11,7 @@ const Quiz = ({ token_data }) => {
 
 	const { setToken } = useContext(UserContext);
 	console.log(token_data)
-	
+
 	const router = useRouter()
 	console.log(BACKEND_API_ENDPOINT)
 	useEffect(() => {
@@ -63,7 +63,7 @@ const Quiz = ({ token_data }) => {
 }
 
 export function getServerSideProps({ req, res }) {
-	return { props: { token_data: req.cookies.token || "" } };
+	return { props: { token_data: req.cookies.cookieToken || "" } };
 }
 
 export default Quiz;

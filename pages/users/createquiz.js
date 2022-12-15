@@ -80,7 +80,7 @@ const CreateQuiz = ({ token_data }) => {
 }
 
 export function getServerSideProps({ req, res }) {
-	return { props: { token_data: req.cookies.token || "" } };
+	return { props: { token_data: req.cookies.cookieToken || "" } };
 }
 
 export default CreateQuiz;

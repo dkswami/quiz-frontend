@@ -4,7 +4,7 @@ import jwt from '@tsndr/cloudflare-worker-jwt'
 export default function middleware(req) {
 	const url = req.url
 
-	let token = req.cookies.get("token");
+	let token = req.cookies.get("cookieToken");
 	console.log(token)
 	if (token) {
 		const { value } = token;

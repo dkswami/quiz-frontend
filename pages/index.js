@@ -44,5 +44,5 @@ export default function Home({ token_data }) {
 }
 
 export function getServerSideProps({ req, res }) {
-	return { props: { token_data : req.cookies.token || "" } };
+	return { props: { token_data : req.cookies.cookieToken || "" } };
 }

@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 		const result = await axios.post(`${BACKEND_API_ENDPOINT}/api/v1/auth/login`, req.body);
 		console.log("from api", result)
 		if (result.status === 201) {
-			res.setHeader('Set-Cookie', cookie.serialize('token', result.data.token, {
+			res.setHeader('Set-Cookie', cookie.serialize('cookieToken', result.data.token, {
 				httpOnly: true,
 				secure: false,			// process.env.NODE_ENV,
 				maxAge: 60 * 60,
