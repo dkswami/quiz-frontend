@@ -10,7 +10,8 @@ const Quiz = ({ token_data }) => {
 	const [allQuizData, setAllQuizData] = useState([]);
 
 	const { setToken } = useContext(UserContext);
-
+	console.log(token_data)
+	
 	const router = useRouter()
 	console.log(BACKEND_API_ENDPOINT)
 	useEffect(() => {
