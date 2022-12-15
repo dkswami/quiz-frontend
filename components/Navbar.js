@@ -38,7 +38,7 @@ export default function Navbar() {
 					</div>
 					<ul className="nav navbar-nav">
 						<li className={pathname === "/users/allquiz" ? "active" : ""}>
-							<Link href="/users/allquiz">All Quiz</Link>
+							<a href="/users/allquiz">All Quiz</a>
 						</li>
 						{
 							currentUser.role === "admin" ? (
@@ -49,7 +49,7 @@ export default function Navbar() {
 						}
 
 						<li className={pathname === "/users/attempts" ? "active" : ""}>
-							<Link href="/users/attempts">Your Attempts</Link>
+							<a href="/users/attempts">Your Attempts</a>
 						</li>
 					</ul>
 					<ul className="nav navbar-nav navbar-right">
