@@ -27,14 +27,10 @@ function Login() {
 			setCurrentUser(response.data.message);
 			setIsLoggedIn(true);
 			alert(`Welcome To Quiz App ${response.data.message.name}`);
-			
 			if (response.data.message.role === "admin") {
 				router.push('/users/createquiz');
-				window.location.reload(true);
-			}
-			else if(response.data.message.role === "user") {
+			} else {
 				router.push('/users/allquiz')
-				window.location.reload(true);
 			}
 		}
 		else if (response.data.message === "Invalid credentials") {
