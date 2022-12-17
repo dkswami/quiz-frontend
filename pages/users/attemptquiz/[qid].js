@@ -131,7 +131,7 @@ function AttemptQuiz({ token_data }) {
 		}
 	}, [quizData])
 
-	// console.log(attemptData, currentAnswer, currentDifficulty, quesCount)
+	console.log(attemptData, currentAnswer, currentDifficulty, quesCount)
 
 	return (
 		<>
@@ -167,7 +167,7 @@ function AttemptQuiz({ token_data }) {
 }
 
 export function getServerSideProps({ req, res }) {
-	return { props: { token_data: req.cookies.token || "" } };
+	return { props: { token_data: req.cookies.cookieToken || "" } };
 }
 
 export default AttemptQuiz
