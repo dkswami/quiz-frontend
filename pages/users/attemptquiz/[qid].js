@@ -28,8 +28,6 @@ const defaultCheckAnswerData = {
 	currAnswer: "",
 }
 
-let currentDifficulty = 5;
-
 function AttemptQuiz({ token_data }) {
 	const [quizData, setQuizData] = useState({});
 	const { title, description, difficultyLevel, questions } = quizData;
@@ -40,6 +38,7 @@ function AttemptQuiz({ token_data }) {
 	const [ checkAnswerData, setCheckAnswerData ] = useState(defaultCheckAnswerData);
 	const { quizID, questionID, currDifficulty, currAnswer } = checkAnswerData;
 
+	const [currentDifficulty, setCurrentDifficulty] = useState(5);
 	const [currentQues, setCurrentQues] = useState(0);
 	const [quesCount, setQuesCount] = useState(1);
 
@@ -80,7 +79,7 @@ function AttemptQuiz({ token_data }) {
 	const checkAnswer = async () => {
 		try {
 			const response = await axios.post(`${BACKEND_API_ENDPOINT}/api/v1/attempt/check`, checkAnswerData, config);
-			currentDifficulty = response.data.newDifficulty;
+			setCurrentDifficulty(response.data.newDifficulty);
 			const newScoreData = [...scoreData, { quesNumber: quesCount, currScore: response.data.newScore }]
 			setAttemptData({
 				...attemptData,
