@@ -5,7 +5,7 @@ export default function middleware(req) {
 	const url = req.url
 
 	let token = req.cookies.get("cookieToken");
-	console.log(token)
+
 	if (token) {
 		const { value } = token;
 		const { payload } = jwt.decode(value);

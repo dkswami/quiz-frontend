@@ -20,6 +20,14 @@ const defaultScoreData = {
 	currScore: 0
 }
 
+const defaultCheckAnswerData = {
+	quizID: "",
+	questionID: "",
+	currDifficulty: 5,
+	currScore: 0,
+	currAnswer: "",
+}
+
 let currentDifficulty = 5;
 
 function AttemptQuiz({ token_data }) {
@@ -29,37 +37,34 @@ function AttemptQuiz({ token_data }) {
 	const [attemptData, setAttemptData] = useState(defaultAttemptData);
 	let { userScore, scoreData } = attemptData;
 
+	const [ checkAnswerData, setCheckAnswerData ] = useState(defaultCheckAnswerData);
+	const { quizID, questionID, currDifficulty, currAnswer } = checkAnswerData;
+
 	const [currentQues, setCurrentQues] = useState(0);
 	const [quesCount, setQuesCount] = useState(1);
-	const [currentAnswer, setCurrentAnswer] = useState("");
 
 	const { currentUser, setToken } = useContext(UserContext);
+	
+	const config = {
+		headers: {
+			Authorization: `Bearer ${token_data}`,
+		},
+	}
 
 	const router = useRouter()
 	const quizId = router.query.qid;
 
 	const handleAnswerChange = (event) => {
-		setCurrentAnswer(event.target.value);
-	}
-
-	const evaluate = (newUserScore, newCurrentDifficulty) => {
-		const newScoreData = [...scoreData, { quesNumber: quesCount, currScore: newUserScore }]
-		setAttemptData({
-			...attemptData,
-			userScore: newUserScore,
-			scoreData: newScoreData
+		setCheckAnswerData({ 
+			quizID: quizId,
+			questionID: questions[currentQues].id,
+			currDifficulty: currentDifficulty,
+			currScore: userScore,
+			currAnswer: event.target.value
 		})
-		setCurrentQues(questions.findIndex((ques) => ques.difficulty === newCurrentDifficulty))
-		setCurrentAnswer("");
-		setQuesCount(quesCount + 1);
 	}
 
 	const submitAttemptData = async () => {
-		const config = {
-			headers: {
-				Authorization: `Bearer ${token_data}`,
-			},
-		}
 		try {
 			const response = await axios.post(`${BACKEND_API_ENDPOINT}/api/v1/attempt`, attemptData, config);
 			console.log(response)
@@ -72,21 +77,34 @@ function AttemptQuiz({ token_data }) {
 		}
 	}
 
+	const checkAnswer = async () => {
+		try {
+			const response = await axios.post(`${BACKEND_API_ENDPOINT}/api/v1/attempt/check`, checkAnswerData, config);
+			console.log(response)
+			currentDifficulty = response.data.newDifficulty;
+			const newScoreData = [...scoreData, { quesNumber: quesCount, currScore: response.data.newScore }]
+			setAttemptData({
+				...attemptData,
+				userScore: response.data.newScore,
+				scoreData: newScoreData
+			})
+			setCurrentQues(questions.findIndex((ques) => ques.difficulty === response.data.newDifficulty))
+			setCheckAnswerData(defaultCheckAnswerData);
+			setQuesCount(quesCount + 1);
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	const handleNextClick = () => {
 		if (quesCount > 10 || currentDifficulty >= 10 || currentDifficulty <= 1) {
 			submitAttemptData();
 		}
 		else {
-			if (currentAnswer !== "") {
-				if (questions[currentQues].correctAnswers.includes(currentAnswer)) {
-					currentDifficulty = currentDifficulty + 1;
-					evaluate(userScore + 5, currentDifficulty);
-				} else {
-					currentDifficulty = currentDifficulty - 1;
-					evaluate(userScore - 2, currentDifficulty);
-				}
+			if (currAnswer !== "") {
+				checkAnswer();
 			}
-			else if (currentAnswer === "") {
+			else if (currAnswer === "") {
 				alert("Please select an option");
 			}
 			else {
@@ -97,11 +115,6 @@ function AttemptQuiz({ token_data }) {
 
 	useEffect(() => {
 		const getOneQuiz = async () => {
-			const config = {
-				headers: {
-					Authorization: `Bearer ${token_data}`,
-				},
-			}
 			try {
 				const response = await axios.get(`${BACKEND_API_ENDPOINT}/api/v1/quiz/${quizId}`, config);
 				setQuizData(response.data);
@@ -109,7 +122,7 @@ function AttemptQuiz({ token_data }) {
 					...attemptData,
 					quizTitle: response.data.title,
 					quizDescription: response.data.description,
-					quizId: response.data._id,
+					quizId: response.data.id,
 					attemptedBy: currentUser.id
 				})
 			} catch (error) {
@@ -131,7 +144,8 @@ function AttemptQuiz({ token_data }) {
 		}
 	}, [quizData])
 
-	console.log(attemptData, currentAnswer, currentDifficulty, quesCount)
+	// console.log(attemptData, currAnswer, currentDifficulty, quesCount)
+	// console.log(checkAnswerData);
 
 	return (
 		<>

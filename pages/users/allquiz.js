@@ -10,10 +10,9 @@ const Quiz = ({ token_data }) => {
 	const [allQuizData, setAllQuizData] = useState([]);
 
 	const { setToken } = useContext(UserContext);
-	console.log(token_data)
 
 	const router = useRouter()
-	console.log(BACKEND_API_ENDPOINT)
+
 	useEffect(() => {
 		const getAllQuiz = async () => {
 			const config = {
@@ -48,11 +47,11 @@ const Quiz = ({ token_data }) => {
 						<div className={Loginstyles.allquizLink} onClick={() => {
 							router.push({
 								pathname: '/users/attemptquiz/[qid]',
-								query: { qid: quiz._id },
+								query: { qid: quiz.id },
 							})
 						}}>
 							<span>Unique link for this quiz :</span>
-							<a>{`${FRONTEND_URL}/users/attemptquiz/${quiz._id}`}</a>
+							<a>{`${FRONTEND_URL}/users/attemptquiz/${quiz.id}`}</a>
 						</div>
 						<p>{quiz.description}</p>
 					</div>

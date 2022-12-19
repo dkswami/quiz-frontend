@@ -30,7 +30,6 @@ const Attempts = ({ token_data }) => {
 	const { currentUser, setToken } = useContext(UserContext);
 	const userId = currentUser.id;
 
-	console.log(BACKEND_API_ENDPOINT)
 	useEffect(() => {
 		const getOneAttempt = async () => {
 			const config = {
