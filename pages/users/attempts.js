@@ -15,10 +15,10 @@ const defaultAttemptData = [
 		userScore: 0,
 		total: 50,
 		scoreData: [
-			{
+			/* {
 				"quesNumber": 1,
 				"currScore": 5
-			},
+			}, */
 		],
 	}
 ]

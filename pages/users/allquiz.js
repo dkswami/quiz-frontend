@@ -42,7 +42,7 @@ const Quiz = ({ token_data }) => {
 		<div>
 			{allQuizData.map((quiz) => {
 				return (
-					<div key={quiz._id}>
+					<div key={quiz.id}>
 						<h2>{quiz.title}</h2>
 						<div className={Loginstyles.allquizLink} onClick={() => {
 							router.push({

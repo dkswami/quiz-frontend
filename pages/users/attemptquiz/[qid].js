@@ -80,7 +80,6 @@ function AttemptQuiz({ token_data }) {
 	const checkAnswer = async () => {
 		try {
 			const response = await axios.post(`${BACKEND_API_ENDPOINT}/api/v1/attempt/check`, checkAnswerData, config);
-			console.log(response)
 			currentDifficulty = response.data.newDifficulty;
 			const newScoreData = [...scoreData, { quesNumber: quesCount, currScore: response.data.newScore }]
 			setAttemptData({
@@ -117,14 +116,7 @@ function AttemptQuiz({ token_data }) {
 		const getOneQuiz = async () => {
 			try {
 				const response = await axios.get(`${BACKEND_API_ENDPOINT}/api/v1/quiz/${quizId}`, config);
-				setQuizData(response.data);
-				setAttemptData({
-					...attemptData,
-					quizTitle: response.data.title,
-					quizDescription: response.data.description,
-					quizId: response.data.id,
-					attemptedBy: currentUser.id
-				})
+				setQuizData(response.data);				
 			} catch (error) {
 				console.log(error)
 				if (error.message === "Network Error") {
@@ -142,10 +134,16 @@ function AttemptQuiz({ token_data }) {
 		if (questions && questions.length > 0) {
 			setCurrentQues(questions.findIndex((ques) => ques.difficulty === 5))
 		}
+		setAttemptData({
+			...attemptData,
+			quizTitle: title,
+			quizDescription: description,
+			quizId: quizData.id,
+			attemptedBy: currentUser.id
+		})
 	}, [quizData])
 
-	// console.log(attemptData, currAnswer, currentDifficulty, quesCount)
-	// console.log(checkAnswerData);
+	console.log(attemptData, currAnswer, currentDifficulty, quesCount)
 
 	return (
 		<>
